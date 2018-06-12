@@ -16,7 +16,6 @@ export const todosReducer = (state = [], action) => {
     case 'REMOVE_TODO':
      return state.filter((item) => {
           return item.id !== action.id
-
       });
 
     case 'SHOW_COMPLETED':
