@@ -1,15 +1,22 @@
 
 export const showCompleted = (id) => {
   return {
-    type: 'SHOW_COMPLETED',
+    type: 'UPDATE_TODO',
     id
   };
 };
 
-export const addTodo = (text) => {
+export const showTodos = (todos) => {
+  return {
+    type: 'SHOW_TODOS',
+    todos
+  };
+};
+
+export const loadTodo = (title) => {
   return {
     type: 'ADD_TODO',
-    text
+    title
   };
 };
 

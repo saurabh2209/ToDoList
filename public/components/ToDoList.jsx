@@ -1,11 +1,14 @@
 
 import React from 'react';
 import { removeTodo, showCompleted } from 'actions';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectTodoItems } from 'selectors/selectors.jsx';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import { toJS } from 'immutable';
 
 const styles = theme => ({
   items: {
@@ -51,6 +54,14 @@ const styles = theme => ({
 
 class ToDoList extends React.Component {
 
+removeItem(id) {
+  this.props.removeItem(id)
+}
+
+completeItem(id) {
+  this.props.completedItem(id)
+}
+
 render() {
   const { classes } = this.props;
   const items = this.props.todos.map((item, index) => {
@@ -68,7 +79,7 @@ render() {
           disabled={item.completed || false}
           className={classes.btncolor}
           onClick= {() => {
-            this.props.completedItem(item.id);
+            this.completeItem(item.id)
           }}
         >
           Complete
@@ -76,7 +87,7 @@ render() {
         <Button
           size='small'
           className={classes.close}
-          onClick={() => {this.props.removeItem(item.id)}}
+          onClick={() => {this.removeItem(item.id)}}
         >
          X
         </Button>
@@ -100,11 +111,10 @@ function mapDispatchToProps(dispatch) {
  }
 }
 
-function mapStateToProps(state) {
-  return {
-    todos: state.todos,
-  }
-}
+const mapStateToProps = createStructuredSelector({
+  todos: makeSelectTodoItems(),
+});
+
 
 ToDoList.propTypes = {
   todos: PropTypes.array,

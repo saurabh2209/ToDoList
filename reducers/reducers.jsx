@@ -1,30 +1,14 @@
 import uuid from 'node-uuid';
+import { fromJS } from 'immutable';
 
-export const todosReducer = (state = [], action) => {
+export const initialState = fromJS({
+  items: [],
+});
+
+export const todosReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_TODO':
-      return [
-        ...state,
-        {
-          id: uuid(),
-          title: action.text,
-          description: '',
-          completed: false,
-        }
-      ];
-
-    case 'REMOVE_TODO':
-     return state.filter((item) => {
-          return item.id !== action.id
-      });
-
-    case 'SHOW_COMPLETED':
-     return state.map((item) => {
-             if(item.id === action.id ) {
-               item.completed = true
-             }
-             return item
-        })
+    case 'SHOW_TODOS':
+      return state.set('items',fromJS(action.todos))
 
     default:
      return state;

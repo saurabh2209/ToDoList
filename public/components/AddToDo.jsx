@@ -2,11 +2,15 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { addTodo } from 'actions';
+import { addTodo, loadTodo } from 'actions';
+import uuid from 'node-uuid';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectTodoItems } from 'selectors/selectors.jsx';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { toJS } from 'immutable';
 
 const styles = theme => ({
   textField: {
@@ -36,7 +40,7 @@ class AddToDo extends React.Component {
  onAddItem() {
   // Create tasks only with title
   if(this.state.value) {
-    this.props.addItem(this.state.value);
+    this.props.loadItem(this.state.value);
     this.setState({value: ''});
   }
 }
@@ -65,9 +69,14 @@ render() {
  }
 }
 
+const mapStateToProps = createStructuredSelector({
+  todos: makeSelectTodoItems(),
+});
+
 function mapDispatchToProps(dispatch) {
   return {
-    addItem: (item) => {dispatch(addTodo(item))}
+    addItem: (item) => {dispatch(addTodo(item))},
+    loadItem: (item) => {dispatch(loadTodo(item))}
   }
 }
 
@@ -77,5 +86,5 @@ AddToDo.propTypes = {
 
 export default compose(
 withStyles(styles),
-connect(null,mapDispatchToProps)
+connect(mapStateToProps,mapDispatchToProps)
 )(AddToDo);
