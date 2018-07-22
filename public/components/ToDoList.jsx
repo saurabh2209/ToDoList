@@ -49,6 +49,9 @@ const styles = theme => ({
     width: 500,
     backgroundColor: '#ADD8E6',
     marginBottom: 20,
+  },
+  hit: {
+    width: 100
   }
 });
 
